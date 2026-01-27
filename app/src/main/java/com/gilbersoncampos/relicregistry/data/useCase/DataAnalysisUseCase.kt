@@ -26,6 +26,7 @@ import com.gilbersoncampos.relicregistry.data.enums.Uses
 import com.gilbersoncampos.relicregistry.data.repository.RecordRepository
 import com.gilbersoncampos.relicregistry.exceptions.AppException
 import com.gilbersoncampos.relicregistry.extensions.getNameTranslated
+import com.gilbersoncampos.relicregistry.ui.theme.primaryLight
 import com.github.tehras.charts.bar.BarChartData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
@@ -101,7 +102,7 @@ class DataAnalysisUseCase @Inject constructor(private val repository: RecordRepo
                     BarChartData.Bar(
                         value = item.value.toFloat(),
                         label = item.key?.getNameTranslated() ?:"Não possui",
-                        color = Color.Red
+                        color = primaryLight
                     )
                 }
             }.collect { emit(it) }

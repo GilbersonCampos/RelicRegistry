@@ -19,6 +19,9 @@ import com.gilbersoncampos.relicregistry.data.enums.FilterEnum
 import com.gilbersoncampos.relicregistry.ui.components.CustomDropdown
 import com.github.tehras.charts.bar.BarChart
 import com.github.tehras.charts.bar.BarChartData
+import com.github.tehras.charts.bar.renderer.label.SimpleValueDrawer
+import  com.github.tehras.charts.bar.renderer.xaxis.SimpleXAxisDrawer
+import com.github.tehras.charts.bar.renderer.yaxis.SimpleYAxisDrawer
 
 @Composable
 fun ChartsScreen(viewModel: ChartViewModel= hiltViewModel()) {
@@ -52,7 +55,7 @@ fun ChartsScreen(viewModel: ChartViewModel= hiltViewModel()) {
             .height(250.dp)
             .padding(vertical = 8.dp)) {
 
-        BarChart(barChartData = barChartData)
+        BarChart(barChartData = barChartData, xAxisDrawer = SimpleXAxisDrawer(axisLineColor = Color.White), yAxisDrawer =SimpleYAxisDrawer(axisLineColor = Color.White, labelTextColor = Color.White) , labelDrawer = SimpleValueDrawer(labelTextColor = Color.White), modifier = Modifier.fillMaxSize())
         }
     }
 }
