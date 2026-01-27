@@ -51,7 +51,7 @@ class RecordRepositoryImpl @Inject constructor(private val recordDao: RecordDao,
     }
 
     override suspend fun getAllArchaeologicalSite(): Flow<List<String>> {
-       return flow { recordDao.getAllArchaeologicalSite().collect{emit(it)} }
+        return flow { recordDao.getAllArchaeologicalSite().collect{ emit(it.groupingBy { aas-> aas.trim()}.eachCount().keys.toList())} }
     }
     override suspend fun syncRecords(listener: HistoricListener) {
         val builder= JsonBuilder.Builder().addMessage("Iniciando sincronização...")

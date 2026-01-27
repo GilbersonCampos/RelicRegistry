@@ -39,7 +39,7 @@ class DataAnalysisUseCase @Inject constructor(private val repository: RecordRepo
         return flow {
             repository.getAllRecord().map { recordsList ->
                 val records =
-                    site?.let { site -> recordsList.filter { catalogRecord -> catalogRecord.archaeologicalSite == site } }
+                    site?.let { site -> recordsList.filter { catalogRecord -> catalogRecord.archaeologicalSite.trim() == site.trim() } }
                         ?: recordsList
                 when (filter) {
                     FilterEnum.GENITALIA -> records.groupingBy { it.genitalia }.eachCount()
