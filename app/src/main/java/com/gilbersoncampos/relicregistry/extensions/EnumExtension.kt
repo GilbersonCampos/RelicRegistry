@@ -90,8 +90,8 @@ fun Enum<*>.getNameTranslated(): String {
         }
 
         is Genitalia -> when (this) {
-            Genitalia.MALE -> "Masculino"
-            Genitalia.FEMALE -> "Feminino"
+            Genitalia.MALE -> "Pênis"
+            Genitalia.FEMALE -> "Vulva"
         }
 
         is Firing -> when (this) {
@@ -199,7 +199,6 @@ fun Enum<*>.getNameTranslated(): String {
 
         is Uses -> when (this) {
             Uses.RATTLE -> "Chocalho"
-            Uses.AMULET -> "Amuleto"
             Uses.CONTAINER -> "Recipiente"
             Uses.PIPE -> "Cachimbo"
             Uses.MUSICAL_INSTRUMENT -> "Instrumento musical"
