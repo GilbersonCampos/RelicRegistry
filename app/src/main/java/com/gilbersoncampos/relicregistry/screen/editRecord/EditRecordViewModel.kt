@@ -10,6 +10,7 @@ import com.gilbersoncampos.relicregistry.data.model.RecordModel
 import com.gilbersoncampos.relicregistry.data.repository.RecordRepository
 import com.gilbersoncampos.relicregistry.data.services.ImageStoreService
 import com.gilbersoncampos.relicregistry.data.services.PdfService
+import com.gilbersoncampos.relicregistry.data.wrappers.PdfViewModelInterface
 import com.gilbersoncampos.relicregistry.service.ExternalPdfService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +31,7 @@ class EditRecordViewModel @Inject constructor(
     private val imageStoreService: ImageStoreService,
     private val pdfService: PdfService
 ) :
-    ViewModel() {
+    ViewModel(),PdfViewModelInterface {
     private val _uiState = MutableStateFlow<EditRecordUiState>(EditRecordUiState.Loading)
     val uiState: StateFlow<EditRecordUiState> = _uiState
     private lateinit var _savedRecord: CatalogRecordModel
@@ -97,7 +98,7 @@ class EditRecordViewModel @Inject constructor(
         )
     }
 
-    fun generatePdf() {
+   override fun generatePdf() {
         viewModelScope.launch(Dispatchers.IO) {
             pdfService.generatePdf(
                 _savedRecord,
@@ -106,7 +107,7 @@ class EditRecordViewModel @Inject constructor(
         }
     }
 
-    fun getPDF(): File {
+    override fun getPdf(): File {
         return pdfService.getPDF()
     }
 }

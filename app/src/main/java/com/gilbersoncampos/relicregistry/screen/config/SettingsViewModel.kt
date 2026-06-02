@@ -1,20 +1,28 @@
 package com.gilbersoncampos.relicregistry.screen.config
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
+import com.gilbersoncampos.relicregistry.data.model.CatalogRecordModel
 import com.gilbersoncampos.relicregistry.data.services.ImageStoreService
+import com.gilbersoncampos.relicregistry.data.services.PdfService
 import com.gilbersoncampos.relicregistry.data.useCase.DeleteCacheUseCase
+import com.gilbersoncampos.relicregistry.data.wrappers.PdfViewModelInterface
+import com.gilbersoncampos.relicregistry.screen.editRecord.EditRecordUiState
 import com.gilbersoncampos.relicregistry.screen.historic.navigateToHistoric
 import com.gilbersoncampos.relicregistry.screen.recordList.RecordUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor(private val deleteCacheUseCase: DeleteCacheUseCase) :
-    ViewModel() {
+class SettingsViewModel @Inject constructor(private val deleteCacheUseCase: DeleteCacheUseCase,private val pdfService: PdfService) :
+    ViewModel(), PdfViewModelInterface {
     private var _settingOptions = MutableStateFlow<List<SettingModel>>(
         mutableListOf(SettingModel("Limpar cache", ActionToClick.OnClearCache),
         SettingModel("Histórico de sync",ActionToClick.OnNavigateHistoric))
@@ -39,6 +47,19 @@ class SettingsViewModel @Inject constructor(private val deleteCacheUseCase: Dele
 
 
         }
+    }
+    override fun generatePdf() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val catalogEmpty=CatalogRecordModel(0, archaeologicalSite = "", identification = "", group = "", shelfLocation = "", classification = "", observations = "")
+            pdfService.generatePdf(
+                catalogEmpty,
+                listImages = listOf()
+            )
+        }
+    }
+
+    override fun getPdf(): File {
+        return pdfService.getPDF()
     }
 
     companion object {

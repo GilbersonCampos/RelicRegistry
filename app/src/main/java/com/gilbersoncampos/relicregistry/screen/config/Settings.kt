@@ -19,16 +19,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.gilbersoncampos.relicregistry.data.wrappers.openPDF
 
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel(),navHostController: NavHostController,onVerifyUpdate:()->Unit) {
     val listOptions by viewModel.settingOptions.collectAsState()
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
         viewModel.addOption(SettingModel("Verificar Atualizações",ActionToClick.Default{onVerifyUpdate()}))
+        viewModel.addOption(SettingModel("Imprimir Modelo",ActionToClick.Default{ openPDF(viewModel, context) }))
     }
     SettingsUi(
         listOptions, viewModel::onClickOption,

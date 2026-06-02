@@ -1,5 +1,6 @@
 package com.gilbersoncampos.relicregistry.screen.editRecord
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
@@ -98,6 +99,8 @@ import com.gilbersoncampos.relicregistry.data.enums.Temper
 import com.gilbersoncampos.relicregistry.data.enums.UpperLimbs
 import com.gilbersoncampos.relicregistry.data.enums.UsageMarks
 import com.gilbersoncampos.relicregistry.data.enums.Uses
+import com.gilbersoncampos.relicregistry.data.wrappers.PdfViewModelInterface
+import com.gilbersoncampos.relicregistry.data.wrappers.openPDF
 import com.gilbersoncampos.relicregistry.extensions.hasOnlyNumber
 import com.gilbersoncampos.relicregistry.extensions.toBrDateTime
 import com.gilbersoncampos.relicregistry.extensions.toOnlyFloat
@@ -133,25 +136,7 @@ fun EditRecord(
         saveImages = viewModel::saveImages,
         onBack = onBack,
         generatePdf = {
-            viewModel.generatePdf()
-            val file = viewModel.getPDF()
-            val uri = FileProvider.getUriForFile(
-                context,
-                BuildConfig.APPLICATION_ID + ".provider", file
-            )
-            val target = Intent(Intent.ACTION_VIEW).apply {
-                setDataAndType(uri, "application/pdf")
-                addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            }
-            Log.d("Activity", uri.toString())
-            val intent = Intent.createChooser(target, "Open Files")
-            try {
-                startActivity(context, intent, null)
-            } catch (e: Exception) {
-                Log.e("Activity", e.message.toString())
-            }
+            openPDF(viewModel, context)
         }
 
     )

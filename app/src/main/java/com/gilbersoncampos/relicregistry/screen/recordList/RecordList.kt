@@ -94,7 +94,7 @@ fun RecordListUI(
 
             is RecordUiState.Success -> {
                 var showDialog by remember { mutableStateOf(false) }
-                val sizeSelected= uiState.records.size
+                val sizeSelected= uiState.recordsSelected.size
                 if (showDialog) {
                     AlertDialogCustom(
                         title = "Excluir registros",
